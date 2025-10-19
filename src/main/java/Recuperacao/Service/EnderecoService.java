@@ -14,10 +14,12 @@ public class EnderecoService {
 
     private final EnderecoRepository enderecoRepository;
     private final ViaCepService viaCepService;
+    private final  AuditoriaService auditoriaService;
 
-    public EnderecoService(EnderecoRepository enderecoRepository, ViaCepService viaCepService) {
+    public EnderecoService(EnderecoRepository enderecoRepository, ViaCepService viaCepService, AuditoriaService auditoriaService) {
         this.enderecoRepository = enderecoRepository;
         this.viaCepService = viaCepService;
+        this.auditoriaService = auditoriaService;
     }
 
     // 🔹 Salvar endereço no banco
@@ -26,13 +28,16 @@ public class EnderecoService {
     }
 
     // 🔹 Atualizar endereço existente
-    public void atualizar(Endereco endereco) {
-        enderecoRepository.save(endereco);
+    public Endereco atualizar(Endereco endereco) {
+        Endereco e = enderecoRepository.save(endereco);
+        auditoriaService.registrar("Atualização de Endereco ID " + e.getId());
+        return e;
     }
 
     // 🔹 Deletar endereço pelo ID
     public void deletarEndereco(Long id) {
         enderecoRepository.deleteById(id);
+        auditoriaService.registrar("Exclusão de Endereco ID " + id);
     }
 
     // 🔹 Buscar endereço pelo ID
@@ -79,6 +84,7 @@ public class EnderecoService {
         );
 
         enderecoRepository.save(endereco);
+        auditoriaService.registrar("Inserção de Endereco via CEP para Paciente ID " + paciente.getId());
         return endereco;
     }
 }

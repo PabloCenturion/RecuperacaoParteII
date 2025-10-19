@@ -3,6 +3,7 @@ package Recuperacao.View;
 import Recuperacao.Controller.PacienteController;
 import Recuperacao.Controller.EnderecoController;
 import Recuperacao.Controller.ConsultaController;
+import Recuperacao.Service.AuditoriaService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -14,15 +15,17 @@ public class MainView implements CommandLineRunner {   //esse comandLine faz com
     private final PacienteController pacienteController;
     private final EnderecoController enderecoController;
     private final ConsultaController consultaController;
+    private final AuditoriaService auditoriaService;
 
     private final Scanner sc = new Scanner(System.in);
 
     public MainView(PacienteController pacienteController,
                     EnderecoController enderecoController,
-                    ConsultaController consultaController) {
+                    ConsultaController consultaController, AuditoriaService auditoriaService) {
         this.pacienteController = pacienteController;
         this.enderecoController = enderecoController;
         this.consultaController = consultaController;
+        this.auditoriaService = auditoriaService;
     }
 
     @Override
@@ -49,13 +52,18 @@ public class MainView implements CommandLineRunner {   //esse comandLine faz com
                     enderecoView.exibirMenu();
                 }
                 case 3 -> {
-                    // Aqui chamamos as respectivas viwes
-                    ConsultaView consultaView = new ConsultaView(consultaController);
-                    consultaView.exibirMenu();
+                        // Aqui chamamos as respectivas viwes
+                        ConsultaView consultaView = new ConsultaView(consultaController);
+                        consultaView.exibirMenu();
+                }
+                case 4 -> {
+                    AuditoriaView auditoriaView = new AuditoriaView(auditoriaService);
+                    auditoriaView.exibirMenu();
                 }
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida!");
             }
         } while (opcao != 0);
     }
+
 }

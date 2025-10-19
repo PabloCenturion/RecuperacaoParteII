@@ -28,6 +28,7 @@ public class ConsultaView {
             System.out.println("4. Cancelar Consulta");
             System.out.println("5. Confirmar Consulta");
             System.out.println("6. Reagendar Consulta");
+            System.out.println("7. Exibir Agenda");
             System.out.println("0. Sair");
             System.out.print("Escolha: ");
             opcao = Integer.parseInt(sc.nextLine());
@@ -39,6 +40,7 @@ public class ConsultaView {
                 case 4 -> cancelarConsulta();
                 case 5 -> confirmarConsulta();
                 case 6 -> reagendarConsulta();
+                case 7 -> exibirAgenda();
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida!");
             }
@@ -111,4 +113,50 @@ public class ConsultaView {
         boolean sucesso = controller.reagendarConsulta(id, novaData);
         System.out.println(sucesso ? "Consulta reagendada!" : "Consulta não encontrada.");
     }
+
+    private void exibirAgenda() {
+        System.out.println("\n=== Agenda de Pacientes ===");
+        System.out.println("1. Consultas do dia");
+        System.out.println("2. Consultas da semana");
+        System.out.println("3. Consultas do mês");
+        System.out.print("Escolha: ");
+        int opcao = Integer.parseInt(sc.nextLine());
+
+        LocalDateTime agora = LocalDateTime.now();
+        LocalDateTime inicio = null;
+        LocalDateTime fim = null;
+
+        switch (opcao) {
+            case 1 -> { // diário
+                inicio = agora.withHour(0).withMinute(0).withSecond(0).withNano(0);
+                fim = agora.withHour(23).withMinute(59).withSecond(59).withNano(999999999);
+            }
+            case 2 -> { // semanal
+                inicio = agora.with(java.time.DayOfWeek.MONDAY).withHour(0).withMinute(0).withSecond(0).withNano(0);
+                fim = inicio.plusDays(6).withHour(23).withMinute(59).withSecond(59).withNano(999999999);
+            }
+            case 3 -> { // mensal
+                inicio = agora.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+                fim = inicio.plusMonths(1).minusDays(1).withHour(23).withMinute(59).withSecond(59).withNano(999999999);
+            }
+            default -> {
+                System.out.println("Opção inválida!");
+                return;
+            }
+        }
+
+        List<Consulta> consultas = controller.buscarPorPeriodo(inicio, fim);
+        if (consultas.isEmpty()) {
+            System.out.println("Nenhuma consulta encontrada nesse período.");
+        } else {
+            System.out.println("\n--- Consultas ---");
+            consultas.forEach(c -> System.out.println(
+                    "ID:" + c.getId() +
+                            " | Paciente:" + c.getPaciente().getNome() +
+                            " | Data:" + c.getDataHora().format(formatter) +
+                            " | Status:" + c.getStatus()
+            ));
+        }
+    }
+
 }

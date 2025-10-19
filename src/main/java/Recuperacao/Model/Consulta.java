@@ -1,18 +1,26 @@
 package Recuperacao.Model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "consultas")
+@EntityListeners(Recuperacao.Listener.AuditoriaListener.class) // Listener de auditoria
 public class Consulta {
 
+    // Getters e Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id; // melhor usar Long
 
     private LocalDateTime dataHora;
-    private String status; // "Pendente", "Confirmada", "Cancelada"
+
+    private String status; // "Pendente", "Confirmada", "Cancelada", "Reagendada"
 
     @ManyToOne
     @JoinColumn(name = "paciente_id")
@@ -27,13 +35,13 @@ public class Consulta {
         this.paciente = paciente;
     }
 
-    // Getters e Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public LocalDateTime getDataHora() { return dataHora; }
-    public void setDataHora(LocalDateTime dataHora) { this.dataHora = dataHora; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    public Paciente getPaciente() { return paciente; }
-    public void setPaciente(Paciente paciente) { this.paciente = paciente; }
+    @Override
+    public String toString() {
+        return "Consulta{" +
+                "id=" + id +
+                ", dataHora=" + dataHora +
+                ", status='" + status + '\'' +
+                ", pacienteId=" + (paciente != null ? paciente.getId() : null) +
+                '}';
+    }
 }

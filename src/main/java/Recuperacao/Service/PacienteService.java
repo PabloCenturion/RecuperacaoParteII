@@ -11,29 +11,33 @@ import java.util.Optional;
 public class PacienteService {
 
     private final PacienteRepository pacienteRepository;
+    private final AuditoriaService auditoriaService;
 
-    public PacienteService(PacienteRepository pacienteRepository) {
+    public PacienteService(PacienteRepository pacienteRepository, AuditoriaService auditoriaService) {
         this.pacienteRepository = pacienteRepository;
+        this.auditoriaService = auditoriaService;
     }
 
     public Paciente salvar(Paciente paciente) {
-        return (Paciente) pacienteRepository.save(paciente);
+        Paciente p = pacienteRepository.save(paciente);
+        auditoriaService.registrar("Inserção de Paciente ID " + p.getId());
+        return p;
     }
 
     public List<Paciente> listarTodos() {
         return pacienteRepository.findAll();
     }
 
-    public Optional<Paciente> buscarPorId(long id) {
-        return pacienteRepository.findById(id);
-    }
 
     public Paciente atualizar(Paciente paciente) {
-        return (Paciente) pacienteRepository.save(paciente);
+        Paciente p = pacienteRepository.save(paciente);
+        auditoriaService.registrar("Atualização de Paciente ID " + p.getId());
+        return p;
     }
 
     public void deletar(long id) {
         pacienteRepository.deleteById(id);
+        auditoriaService.registrar("Exclusão de Paciente ID " + id);
     }
     public Optional<Paciente> buscarPorId(Long id) {
         return pacienteRepository.findById(id);

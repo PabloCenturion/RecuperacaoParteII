@@ -1,20 +1,26 @@
 package Recuperacao.Model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
+@Setter
+@Getter
 @Entity
 @Table(name = "enderecos")
-public class Endereco {
+@EntityListeners(Recuperacao.Listener.AuditoriaListener.class) // Listener de auditoria
+public class Endereco implements Serializable {
 
+    // Getters e Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id; // melhor usar Long para IDs
 
     private String estado;
     private String cidade;
     private String rua;
-    @Setter
     private String numero;
     private String bairro;
     private String cep;
@@ -31,25 +37,22 @@ public class Endereco {
         this.cidade = cidade;
         this.rua = rua;
         this.numero = numero;
+        this.bairro = bairro;
         this.cep = cep;
         this.paciente = paciente;
-        this.bairro = bairro;
     }
 
-    // Getters e Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
-    public String getCidade() { return cidade; }
-    public void setCidade(String cidade) { this.cidade = cidade; }
-    public String getRua() { return rua; }
-    public void setRua(String rua) { this.rua = rua; }
-    public String getNumero() { return numero; }
-    public String getCep() { return cep; }
-    public void setCep(String cep) { this.cep = cep; }
-    public Paciente getPaciente() { return paciente; }
-    public void setPaciente(Paciente paciente) { this.paciente = paciente; }
-    public void setBairro(String bairro) {this.bairro = bairro;}
-    public String getBairro() {return bairro;}
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "id=" + id +
+                ", estado='" + estado + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", rua='" + rua + '\'' +
+                ", numero='" + numero + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", cep='" + cep + '\'' +
+                ", pacienteId=" + (paciente != null ? paciente.getId() : null) +
+                '}';
+    }
 }

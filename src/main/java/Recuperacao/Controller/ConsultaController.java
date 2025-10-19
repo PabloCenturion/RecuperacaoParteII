@@ -2,6 +2,7 @@ package Recuperacao.Controller;
 
 import Recuperacao.Model.Consulta;
 import Recuperacao.Model.Paciente;
+import Recuperacao.Service.AuditoriaService;
 import Recuperacao.Service.ConsultaService;
 import Recuperacao.Service.PacienteService;
 import org.springframework.stereotype.Component;
@@ -15,10 +16,12 @@ public class ConsultaController {
 
     private final ConsultaService consultaService;
     private final PacienteService pacienteService;
+    private final AuditoriaService auditoriaService;
 
-    public ConsultaController(ConsultaService consultaService, PacienteService pacienteService) {
+    public ConsultaController(ConsultaService consultaService, PacienteService pacienteService, AuditoriaService auditoriaService) {
         this.consultaService = consultaService;
         this.pacienteService = pacienteService;
+        this.auditoriaService = auditoriaService;
     }
 
     // Métodos de negócio - recebem dados da View
@@ -33,6 +36,11 @@ public class ConsultaController {
             return true;
         }
         return false;
+    }
+
+    public List<Consulta> buscarPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
+        auditoriaService.registrarOperacao("Consulta de Agenda");
+        return consultaService.buscarPorPeriodo(inicio, fim);
     }
 
     public List<Consulta> listarConsultas() {
