@@ -1,6 +1,7 @@
 package Recuperacao.Model;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 
 @Entity
 @Table(name = "enderecos")
@@ -13,7 +14,9 @@ public class Endereco {
     private String estado;
     private String cidade;
     private String rua;
+    @Setter
     private String numero;
+    private String bairro;
     private String cep;
 
     @ManyToOne
@@ -23,13 +26,14 @@ public class Endereco {
     // Construtores
     public Endereco() {}
 
-    public Endereco(String estado, String cidade, String rua, String numero, String cep, Paciente paciente) {
+    public Endereco(String estado, String cidade, String rua, String numero, String bairro, String cep, Paciente paciente) {
         this.estado = estado;
         this.cidade = cidade;
         this.rua = rua;
         this.numero = numero;
         this.cep = cep;
         this.paciente = paciente;
+        this.bairro = bairro;
     }
 
     // Getters e Setters
@@ -42,9 +46,10 @@ public class Endereco {
     public String getRua() { return rua; }
     public void setRua(String rua) { this.rua = rua; }
     public String getNumero() { return numero; }
-    public void setNumero(String numero) { this.numero = numero; }
     public String getCep() { return cep; }
     public void setCep(String cep) { this.cep = cep; }
     public Paciente getPaciente() { return paciente; }
     public void setPaciente(Paciente paciente) { this.paciente = paciente; }
+    public void setBairro(String bairro) {this.bairro = bairro;}
+    public String getBairro() {return bairro;}
 }
