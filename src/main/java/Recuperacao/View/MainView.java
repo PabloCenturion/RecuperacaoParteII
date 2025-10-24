@@ -29,7 +29,7 @@ public class MainView implements CommandLineRunner {   //esse comandLine faz com
     }
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) { // Menu principal da aplicação, daqui chamamos os demais menus
         int opcao;
         do {
             System.out.println("\n=== SISTEMA DE CLÍNICA ===");
@@ -52,11 +52,12 @@ public class MainView implements CommandLineRunner {   //esse comandLine faz com
                     enderecoView.exibirMenu();
                 }
                 case 3 -> {
-                        // Aqui chamamos as respectivas viwes
-                        ConsultaView consultaView = new ConsultaView(consultaController);
-                        consultaView.exibirMenu();
+                    // Aqui chamamos as respectivas viwes
+                    ConsultaView consultaView = new ConsultaView(consultaController);
+                    consultaView.exibirMenu();
                 }
                 case 4 -> {
+                    // Aqui chamamos o serviõ de auditoria
                     AuditoriaView auditoriaView = new AuditoriaView(auditoriaService);
                     auditoriaView.exibirMenu();
                 }

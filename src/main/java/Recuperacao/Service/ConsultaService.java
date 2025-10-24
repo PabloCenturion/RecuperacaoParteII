@@ -18,19 +18,19 @@ public class ConsultaService {
         this.auditoriaService = auditoriaService;
     }
 
-    // 🔹 Salvar ou atualizar consulta
+    // Salvar ou atualizar consulta
     public Consulta salvar(Consulta consulta) {
         Consulta c = consultaRepository.save(consulta);
         auditoriaService.registrar("Atualização de Consulta ID " + c.getId());
         return c;
     }
 
-    // 🔹 Listar todas as consultas
+    // Listar todas as consultas
     public List<Consulta> listarTodos() {
         return consultaRepository.findAll();
     }
 
-    // 🔹 Buscar consulta por ID
+    // Buscar consulta por ID
     public Optional<Consulta> buscarPorId(Long id) {
         return consultaRepository.findById(id);
     }
@@ -42,32 +42,32 @@ public class ConsultaService {
         return c;
     }
 
-    // 🔹 Deletar consulta por ID
+    // Deletar consulta por ID
     public void deleteById(Long id) {
         consultaRepository.deleteById(id);
         auditoriaService.registrar("Exclusão de Consulta ID " + id);
     }
 
-    // 🔹 Cancelar consulta
+    // Cancelar consulta
     public void cancelar(Consulta consulta) {
         consulta.setStatus("Cancelada");
         consultaRepository.save(consulta);
     }
 
-    // 🔹 Confirmar consulta
+    // Confirmar consulta
     public void confirmar(Consulta consulta) {
         consulta.setStatus("Confirmada");
         consultaRepository.save(consulta);
     }
 
-    // 🔹 Reagendar consulta
+    // Reagendar consulta
     public void reagendar(Consulta consulta, LocalDateTime novaDataHora) {
         consulta.setDataHora(novaDataHora);
         consulta.setStatus("Reagendada");
         consultaRepository.save(consulta);
     }
 
-    // 🔹 Buscar consultas em um período específico (diário, semanal, mensal)
+    // Buscar consultas em um período específico (diário, semanal e mensal)
     public List<Consulta> buscarPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
         return consultaRepository.findByDataHoraBetween(inicio, fim);
     }

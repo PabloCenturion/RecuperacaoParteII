@@ -28,7 +28,7 @@ public class Auditoria {
     }
 
     @Override
-    public String toString() {
+    public String toString() {//a estrutura que é salva
         return "Auditoria{" +
                 "id=" + id +
                 ", operacao='" + operacao + '\'' +
